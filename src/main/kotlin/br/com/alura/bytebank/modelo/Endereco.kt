@@ -1,7 +1,9 @@
 package br.com.alura.bytebank.modelo
 
+import br.com.alura.bytebank.teste.testaAny
+
 class Endereco(
-    var logradouro: String = "",
+    var logradouro: String? = null,
     var numero: Int = 0,
     var bairro: String = "",
     var cidade: String = "",
@@ -24,7 +26,7 @@ complemento='$complemento')
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
-
+        testaAny()
         other as Endereco
 
         if (logradouro != other.logradouro) return false

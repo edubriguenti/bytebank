@@ -1,55 +1,38 @@
 package br.com.alura.bytebank
 
-import br.com.alura.bytebank.modelo.Endereco
-import java.lang.ClassCastException
-import java.lang.NumberFormatException
 
 fun main() {
-    println("início main")
-    val entrada: String = "1.0"
+    val minhaFuncao: () -> Unit = ::teste
+    println(minhaFuncao())
 
-    val valorRecebido: Double? = try {
-        entrada.toDouble()
-    } catch (e: NumberFormatException) {
-        println("Problema na conversão")
-        e.printStackTrace()
-        null
-    }
+    val minhaFuncaoClasse : () -> Unit = Teste()
+    minhaFuncaoClasse()
 
-    val valorComTaxa: Double? = if (valorRecebido != null) {
-        valorRecebido + 0.1
-    } else {
-        null
-    }
+    val teste2 = Teste2()
+    teste2(10)
 
-    if (valorComTaxa != null) {
-        println("valor recebido: $valorComTaxa")
-    } else {
-        println("valor inválido")
-    }
-
-
-    funcao1()
-    println("fim main")
 }
 
-fun funcao1() {
-    println("início funcao1")
-    try {
-        funcao2()
-    } catch (e: ClassCastException) {
-        e.printStackTrace()
-        println("ClassCastException foi pegada")
-    }
-    println("fim funcao1")
+fun teste() {
+    println("Teste")
 }
 
-fun funcao2() {
-    println("início funcao2")
-    for (i in 1..5) {
-        println(i)
-        val endereco = Any()
-        endereco as Endereco
+class Teste : () -> Unit {
+    override fun invoke() {
+        println("Executa invoke do Teste")
     }
-    println("fim funcao2")
+
+}
+
+class Teste2: () -> Unit {
+
+    operator fun invoke(valor: Int){
+        println(valor)
+    }
+
+    override fun invoke() {
+        println("executa invoke do Teste2")
+    }
+
+
 }
