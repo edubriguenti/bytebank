@@ -1,38 +1,47 @@
 package br.com.alura.bytebank
 
+import br.com.alura.bytebank.modelo.Autenticavel
+import br.com.alura.bytebank.modelo.Endereco
+import br.com.alura.bytebank.modelo.SistemaInterno
+
 
 fun main() {
-    val minhaFuncao: () -> Unit = ::teste
-    println(minhaFuncao())
 
-    val minhaFuncaoClasse : () -> Unit = Teste()
-    minhaFuncaoClasse()
+    val endereco = Endereco(logradouro = "Rua Vergueiro", numero = 2)
+    val enderecoEmMaiusculo = "${endereco.logradouro} , ${endereco.numero}".toUpperCase()
+    println(enderecoEmMaiusculo)
 
-    val teste2 = Teste2()
-    teste2(10)
+    Endereco(logradouro = "Rua Vergueiro", numero = 2)
+        .run {
+            "$logradouro, $numero".toUpperCase()
+        }.let {enderecoEmMaiusculo: String ->
+            println(enderecoEmMaiusculo)
+        }
 
-}
+    listOf(Endereco(complemento = "Apartamento"), Endereco(), Endereco(complemento = "casa"))
+        .filter { it.complemento.isNotEmpty() }
+        .let(::println)
 
-fun teste() {
-    println("Teste")
-}
+    soma(10, 2, resultado = {
+        println("1")
+        println(it)
+        println("2")
+    })
 
-class Teste : () -> Unit {
-    override fun invoke() {
-        println("Executa invoke do Teste")
+
+    val autenticavel = object : Autenticavel {
+        val senha = 1234
+        override fun autentica(senha: Int): Boolean = this.senha == senha
+    }
+
+    SistemaInterno().entra(autenticavel, 123) {
+        println("Realizar pagamento")
     }
 
 }
 
-class Teste2: () -> Unit {
-
-    operator fun invoke(valor: Int){
-        println(valor)
-    }
-
-    override fun invoke() {
-        println("executa invoke do Teste2")
-    }
-
-
+fun soma(a: Int, b: Int, resultado: (Int) -> Unit) {
+    println("Antes da soma")
+    resultado(a + b)
+    println("Depois da soma")
 }

@@ -3,7 +3,7 @@ package br.com.alura.bytebank.modelo
 import br.com.alura.bytebank.teste.testaAny
 
 class Endereco(
-    var logradouro: String? = null,
+    var logradouro: String = "",
     var numero: Int = 0,
     var bairro: String = "",
     var cidade: String = "",
