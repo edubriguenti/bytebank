@@ -1,47 +1,53 @@
 package br.com.alura.bytebank
 
-import br.com.alura.bytebank.modelo.Autenticavel
+import br.com.alura.bytebank.modelo.Cliente
+import br.com.alura.bytebank.modelo.ContaPoupanca
 import br.com.alura.bytebank.modelo.Endereco
-import br.com.alura.bytebank.modelo.SistemaInterno
+import br.com.alura.bytebank.teste.testaHOF
 
 
 fun main() {
+    testaHOF()
+}
 
-    val endereco = Endereco(logradouro = "Rua Vergueiro", numero = 2)
-    val enderecoEmMaiusculo = "${endereco.logradouro} , ${endereco.numero}".toUpperCase()
-    println(enderecoEmMaiusculo)
+fun testaRun() {
+    val taxaAnual = 0.05
+    val taxaMensal = taxaAnual / 12
+    println("Taxa mensal: $taxaMensal")
+    val contaPoupanca = ContaPoupanca(Cliente(nome = "Eduardo", cpf = "123", senha = 123), 1000)
+    contaPoupanca.run {
+        deposita(1000.0)
+        saldo * taxaMensal
+    }.also {
+        println("Rediemnto mensal: $it")
+    }
 
-    Endereco(logradouro = "Rua Vergueiro", numero = 2)
-        .run {
-            "$logradouro, $numero".toUpperCase()
-        }.let {enderecoEmMaiusculo: String ->
-            println(enderecoEmMaiusculo)
+
+    val redimentoAnual = run {
+        var saldo = contaPoupanca.saldo
+        repeat(12) {
+            saldo += saldo * taxaMensal
         }
-
-    listOf(Endereco(complemento = "Apartamento"), Endereco(), Endereco(complemento = "casa"))
-        .filter { it.complemento.isNotEmpty() }
-        .let(::println)
-
-    soma(10, 2, resultado = {
-        println("1")
-        println(it)
-        println("2")
-    })
-
-
-    val autenticavel = object : Autenticavel {
-        val senha = 1234
-        override fun autentica(senha: Int): Boolean = this.senha == senha
+        saldo
     }
 
-    SistemaInterno().entra(autenticavel, 123) {
-        println("Realizar pagamento")
-    }
-
+    println("Simulacao rendimento anual $redimentoAnual")
 }
 
-fun soma(a: Int, b: Int, resultado: (Int) -> Unit) {
-    println("Antes da soma")
-    resultado(a + b)
-    println("Depois da soma")
+private fun testaWith() {
+    with(Endereco()) {
+        logradouro = "Rua vergueiro"
+        numero = 2
+        estado = "SP"
+        cep = "060030"
+        cidade = "Sao Paulo"
+        bairro = "Bela Vista"
+        complemento = "Apt"
+        completo()
+    }.also(::println)
 }
+
+
+
+
+
